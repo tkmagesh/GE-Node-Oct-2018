@@ -3,16 +3,14 @@ const http = require('http');
 const dataParser = require('./dataParser'),
 	serveStatic = require('./serveStatic'),
 	serveCalculator = require('./serveCalculator'),
-	notFoundHandler = require('./notFoundHandler');
+	notFoundHandler = require('./notFoundHandler'),
+	app = require('./app');
 
-let server = http.createServer(function(req, res){
-	dataParser(req);
-	console.log(req.method + '\t' + req.urlObj.pathname);
-	serveStatic(req, res);
-	serveCalculator(req, res);
-	notFoundHandler(res);
-});
+app.use(dataParser);
+app.use(serveStatic);
+app.use(serveCalculator);
+app.use(notFoundHandler);
 
-server.listen(8080);
+http.createServer(app).listen(8080);
 
 console.log('server listening on port 8080!');
