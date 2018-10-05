@@ -8,6 +8,17 @@ const dataParser = require('./dataParser'),
 	app = require('./app');
 
 app.use(dataParser);
+
+app.use(function(req, res, next){
+	let startTime = new Date();
+	res.on('finish', function(){
+		let endTime = new Date();
+		let delta = endTime - startTime;
+		console.log(req.method + '\t' + req.urlObj.pathname + ' ' + delta + 'ms');
+	});
+	next();
+});
+
 app.use(serveStatic(path.join(__dirname, 'public')));
 app.use(serveCalculator);
 app.use(notFoundHandler);
