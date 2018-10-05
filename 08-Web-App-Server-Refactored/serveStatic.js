@@ -7,33 +7,22 @@ function isStatic(resourceName){
 	return staticResExtns.indexOf(path.extname(resourceName)) >= 0;
 }
 
-module.exports = function(req, res, next, args){
-	console.log(args);
-	let resourceName = req.urlObj.pathname === '/' ? 'index.html' : req.urlObj.pathname;
-	if (isStatic(resourceName)){
-		let resource = path.join(__dirname, resourceName);
-		if (!fs.existsSync(resource)){
-			console.log('[@serveStatic] - serving 404');
-			res.statusCode = 404;
-			res.end();
+module.exports = function(publicFolderPath){
+	return function(req, res, next, args){
+		let resourceName = req.urlObj.pathname === '/' ? 'index.html' : req.urlObj.pathname;
+		if (isStatic(resourceName)){
+			let resource = path.join(__dirname, publicFolderPath);
+			if (!fs.existsSync(resource)){
+				next();
+				return;
+			}
+			let stream = fs.createReadStream(resource);
+			stream.pipe(res);
+			stream.on('end', function(){
+				next();
+			});
+		} else {
 			next();
-			return;
 		}
-		let stream = fs.createReadStream(resource);
-		stream.pipe(res);
-		stream.on('end', function(){
-			next();
-		});
-		/*stream.on('data', function(chunk){
-			console.log('[@serveStatic - data event');
-			res.write(chunk);
-		});
-		stream.on('end', function(){
-			console.log('[@serveStatic - end event');
-			res.end();
-			next();
-		});*/
-	} else {
-		next();
 	}
 }
