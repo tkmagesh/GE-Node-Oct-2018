@@ -1,10 +1,14 @@
+const taskDb = require('../data/taskDb.js');
+
 var taskList = [
-	{id : 1, name : 'Learn JavaScript', isCompleted : false},
-	{id : 2, name : 'Plan vacation', isCompleted : true}
+/*	{id : 1, name : 'Learn JavaScript', isCompleted : false},
+	{id : 2, name : 'Plan vacation', isCompleted : true}*/
 ];
 
-function getAll(){
-	return [...taskList];
+function getAll(callback){
+	taskDb.getAll(function(err, taskList){
+		callback(err, taskList);
+	})
 }
 
 function get(taskIdToFind){
