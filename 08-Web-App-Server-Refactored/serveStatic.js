@@ -11,7 +11,8 @@ module.exports = function(publicFolderPath){
 	return function(req, res, next, args){
 		let resourceName = req.urlObj.pathname === '/' ? 'index.html' : req.urlObj.pathname;
 		if (isStatic(resourceName)){
-			let resource = path.join(__dirname, publicFolderPath);
+			let resource = path.join(publicFolderPath, resourceName);
+			console.log(resource);
 			if (!fs.existsSync(resource)){
 				next();
 				return;
