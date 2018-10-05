@@ -1,5 +1,6 @@
 const http = require('http'),
-	path = require('path');
+	path = require('path'),
+	chalk = require('chalk');
 
 const dataParser = require('./dataParser'),
 	serveStatic = require('./serveStatic'),
@@ -14,7 +15,7 @@ app.use(function(req, res, next){
 	res.on('finish', function(){
 		let endTime = new Date();
 		let delta = endTime - startTime;
-		console.log(req.method + '\t' + req.urlObj.pathname + ' ' + delta + 'ms');
+		console.log(chalk.red(req.method) + '\t' + chalk.blue(req.urlObj.pathname) + ' ' + chalk.bold.yellow(delta + 'ms'));
 	});
 	next();
 });
