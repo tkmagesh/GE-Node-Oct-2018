@@ -13,6 +13,11 @@ function getAll(callback){
 	});
 }
 
+function save(data, callback){
+	fs.writeFile(dbFile, JSON.stringify(data), 'utf8', callback);
+}
+
 module.exports = {
-	getAll
+	getAll,
+	save
 };
