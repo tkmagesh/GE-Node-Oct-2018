@@ -21,9 +21,6 @@ router.get('/', async function(req, res, next){
 		.catch(function(err){
 			res.status(500).end();
 		});
-		
-	
-
 });
 
 router.get('/:id', async function(req, res, next){
@@ -35,6 +32,7 @@ router.get('/:id', async function(req, res, next){
 		res.status(404).end();	
 	}
 });
+
 
 router.post('/', function(req, res, next){
 	var newTaskData = req.body;
