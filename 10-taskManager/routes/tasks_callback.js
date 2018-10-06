@@ -4,43 +4,31 @@ var express = require('express'),
 
 router.get('/', function(req, res, next){
 	//res.json(taskService.getAll());
-	/*taskService.getAll(function(err, taskList){
+	taskService.getAll(function(err, taskList){
 		if (err){
-			
+			res.status(500).end();
 			return;
 		}
 		res.json(taskList);
-	});*/
-
-	taskService
-		.getAll()
-		.then(function(taskList){
-			res.json(taskList);
-		})
-		.catch(function(err){
-			res.status(500).end();
-		});
+	});
 });
 
 router.get('/:id', function(req, res, next){
 	var taskIdToFind = parseInt(req.params.id);
-	taskService
-		.get(taskIdToFind)
-		.then(function(resultTask){
+	taskService.get(taskIdToFind, function(err, resultTask){
+		if (!err){
 			res.json(resultTask);
-		})
-		.catch(function(error){
+		} else {
 			res.status(404).end();	
-		});
+		}
+	});	
 });
 
 router.post('/', function(req, res, next){
 	var newTaskData = req.body;
-	taskService
-		.addNew(newTaskData)
-		.then(function(newTask){
-			res.status(201).json(newTask);	
-		});
+	taskService.addNew(newTaskData, function(err, newTask){
+		res.status(201).json(newTask);	
+	});
 	
 });
 
@@ -48,28 +36,26 @@ router.put('/:id', function(req, res, next){
 	var taskIdToUpdate = parseInt(req.params.id),
 		updatedTask = req.body;
 	
-	taskService
-		.update(taskIdToUpdate, updatedTask)
-		.then(function(result){
-			res.json(result);
-		})
-		.catch(function(err){
+	taskService.update(taskIdToUpdate, updatedTask, function(err, result){
+		if (err){
 			res.status(404).end();
-		});
+		} else {
+			res.json(result);
+		}
+	});
 });
 
 router.patch('/:id', function(req, res, next){
 	var taskIdToUpdate = parseInt(req.params.id),
 		updatedTaskData = req.body;
 	
-	taskService
-		.partialUpdate(taskIdToUpdate, updatedTaskData)
-		.then(function(result){
-			res.json(result);
-		})
-		.catch(function(err){
+	taskService.partialUpdate(taskIdToUpdate, updatedTaskData, function(err, result){
+		if (err){
 			res.status(404).end();
-		});
+		} else {
+			res.json(result);
+		}
+	});
 });
 
 
@@ -77,14 +63,13 @@ router.patch('/:id', function(req, res, next){
 router.delete('/:id', function(req, res, next){
 	var taskIdToDelete = parseInt(req.params.id);
 
-	taskService
-		.remove(taskIdToDelete)
-		.then(function(result){
-			res.json(result);
-		})
-		.catch(function(err){
-			res.status(404).end();
-		});
+	taskService.remove(taskIdToDelete, function(err){
+		if (!err){
+			res.json({});
+		} else {
+			res.status(404).end();	
+		}
+	});
 });
 
 module.exports = router;
