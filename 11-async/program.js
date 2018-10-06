@@ -28,7 +28,7 @@ var app = (function(){
 		});
 	}
 
-	function addAsyncPromise(x,y, callback){
+	function addAsyncPromise(x,y){
 		console.log(`	[@Service] processing ${x} and ${y}`);
 
 		var promise = new Promise(function(resolveFn, rejectFn){
@@ -42,10 +42,24 @@ var app = (function(){
 		return promise;
 	}
 
+	/*function addAsyncPromiseClient(x,y){
+		console.log(`[@Client] triggering addAsyncPromise`);
+		var promise = addAsyncPromise(x,y);
+		promise.then(function(result){
+			console.log(`[@Client] result = ${result}`);
+		});
+	}*/
+
+	async function addAsyncPromiseClient(x,y){
+		console.log(`[@Client] triggering addAsyncPromise`);
+		var result = await addAsyncPromise(x,y);
+		console.log(`[@Client] result = ${result}`);
+	}
+
 	return {
 		addSyncClient
 		, addAsyncClient
-		, addAsyncPromise
+		, addAsyncPromiseClient
 	}
 
 

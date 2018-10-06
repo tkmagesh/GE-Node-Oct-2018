@@ -56,15 +56,17 @@ Promise.promisifyAll(fs);
 
 function getAll(){
 	
-	return fs.readFileAsync(dbFile, {encoding : 'utf8'})
-			.then(function(fileContents){
-				return JSON.parse(fileContents);
-			});
+	return fs
+		.readFileAsync(dbFile, {encoding : 'utf8'})
+		.then(function(fileContents){
+			return JSON.parse(fileContents);
+		});
 	
 }
 
 function save(data){
-	return fs.writeFileAsync(dbFile, JSON.stringify(data), 'utf8');
+	return fs
+		.writeFileAsync(dbFile, JSON.stringify(data), 'utf8');
 }
 
 module.exports = {

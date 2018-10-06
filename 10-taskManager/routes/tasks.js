@@ -2,7 +2,7 @@ var express = require('express'),
 	router = express.Router(),
 	taskService = require('../services/taskService');
 
-router.get('/', function(req, res, next){
+router.get('/', async function(req, res, next){
 	//res.json(taskService.getAll());
 	/*taskService.getAll(function(err, taskList){
 		if (err){
@@ -12,6 +12,7 @@ router.get('/', function(req, res, next){
 		res.json(taskList);
 	});*/
 
+	
 	taskService
 		.getAll()
 		.then(function(taskList){
@@ -20,18 +21,19 @@ router.get('/', function(req, res, next){
 		.catch(function(err){
 			res.status(500).end();
 		});
+		
+	
+
 });
 
-router.get('/:id', function(req, res, next){
+router.get('/:id', async function(req, res, next){
 	var taskIdToFind = parseInt(req.params.id);
-	taskService
-		.get(taskIdToFind)
-		.then(function(resultTask){
-			res.json(resultTask);
-		})
-		.catch(function(error){
-			res.status(404).end();	
-		});
+	try	{
+		var resultTask = await taskService.get(taskIdToFind);
+		res.json(resultTask);
+	} catch(error){
+		res.status(404).end();	
+	}
 });
 
 router.post('/', function(req, res, next){

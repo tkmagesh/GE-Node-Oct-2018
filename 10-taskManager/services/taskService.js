@@ -4,8 +4,8 @@ function getAll(){
 	return taskDb.getAll();
 }
 
-function get(taskIdToFind){
-	return taskDb
+async function get(taskIdToFind){
+	/*return taskDb
 		.getAll()
 		.then(function(taskList){
 			var resultTask = taskList.find(function(task){
@@ -17,8 +17,20 @@ function get(taskIdToFind){
 				return Promise.reject(error);
 			}
 			return resultTask;
-		});
-	
+		});*/
+
+	var taskList = await taskDb.getAll();
+
+	var resultTask = taskList.find(function(task){
+		return task.id === taskIdToFind;
+	});
+
+	if (!resultTask){
+		let error = new Error('Task not found');
+		throw error;
+	}
+
+	return resultTask;
 }
 
 function addNew(newTaskData){
