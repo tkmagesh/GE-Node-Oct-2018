@@ -59,4 +59,35 @@ p.then(function(result){
 	console.log(`[@Client] result = ${result}`);
 });
 
+
+
+var p2 = p.then(function(result){
+	console.log(`[@Client] result = ${result}`);
+	return new Promise(function(resolveFn, rejectFn){
+		setTimeout(function(){
+            var doubleResult = result * 2;
+			resolveFn(doubleResult);
+        }, 4000);
+    });
+});
+
+var p2 = p.then(function(result){
+	console.log(`[@Client] result = ${result}`);
+	return new Promise(function(resolveFn, rejectFn){
+		var doubleResult = result * 2;
+		resolveFn(doubleResult);
+	});
+});
+
+var p2 = p.then(function(result){
+	console.log(`[@Client] result = ${result}`);
+	var doubleResult = result * 2;
+	return Promise.resolve(doubleResult);
+});
+
+var p2 = p.then(function(result){
+	console.log(`[@Client] result = ${result}`);
+	var doubleResult = result * 2;
+	return doubleResult;
+});
 */
